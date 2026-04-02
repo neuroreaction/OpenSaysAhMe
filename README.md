@@ -1,8 +1,8 @@
-# 🚗 Modern Garage Door Controller
+#  Modern Garage Door Controller
 
-Professional-grade garage door controller for Raspberry Pi with iOS app support.
-
-## ✨ Features
+Better than a cloud solution-grade garage door controller for Raspberry Pi with iOS app support.
+ersonal note: I originally hand-coded this in 2018 for the Raspberry Pi and iOS with the help of several online walkthroughs covering GPIO pinouts, WiringPi, and Apache. Then one day in 2021, the Pi updated and Apache was removed and replaced with NGINX. I did not use it much, so I did not notice until I went to show off my handiwork. Knowing nothing about NGINX at the time, I started reworking it over the next few years in my free time. Fast forward to 2025, I decided to have Claude help out, and this is the result. I will dig up the original code at some point, but I wanted to share this now. This should not be used from the internet since there is no SSL/TLS encryption, but by the time I am in my driveway my phone connects to Wi-Fi, so it works for me.
+##  Features
 
 - **Modern Technology**: Python 3 + Flask + gpiozero (no deprecated WiringPi)
 - **Secure Authentication**: Token-based API access
@@ -11,7 +11,7 @@ Professional-grade garage door controller for Raspberry Pi with iOS app support.
 - **Auto-Start**: Systemd service runs on boot
 - **Reliable**: Error handling and logging
 
-## 📦 What's Included
+##  What's Included
 
 1. **Backend (Raspberry Pi)**
    - `app.py` - Flask REST API server
@@ -28,7 +28,7 @@ Professional-grade garage door controller for Raspberry Pi with iOS app support.
    - `GARAGE_DOOR_SETUP_GUIDE.md` - Complete setup instructions
    - `QUICK_REFERENCE.md` - Commands and troubleshooting
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### 1. Prepare Raspberry Pi
 ```bash
@@ -60,45 +60,52 @@ struct Config {
 ### 4. Test Everything
 ```bash
 # Test API locally
-curl -X POST http://localhost:5000/api/trigger/sara \
+curl -X POST http://localhost:5000/api/trigger/Right \
   -H "Authorization: Bearer YOUR_TOKEN"
 
 # Open web interface
 http://YOUR_PI_IP:5000?token=YOUR_TOKEN
 ```
 
-## 🔧 Hardware Setup
+##  Hardware Setup
 
 ### GPIO Connections (BCM Numbering)
-- **GPIO 7** → Sara's door relay
-- **GPIO 4** → David's door relay
+- **GPIO 23** → Right door relay
+- **GPIO 4** → Left door relay
+- **GPIO 22** → LED
 - **GND** → Common ground
-
+#### there is a pin out screenshot in this collection.
 ### Relay Wiring
 ```
 Garage Opener    Relay Board    Raspberry Pi
 ─────────────    ───────────    ────────────
 Terminal 1   →   NO/COM    
 Terminal 2   →   NO/COM         
-                 Signal    →    GPIO 7 (Sara)
-                 Signal    →    GPIO 4 (David)
+                 Signal    →    GPIO 23 (Right)
+                 Signal    →    GPIO 4 (Left)
                  VCC       →    5V
                  GND       →    GND
-```
 
-## 📡 API Reference
+```
+### Indicator Light Wire
+LED   Raspberry Pi
+   +      GPIO 22
+   -      GPIO Ground (any unused Ground Pin)
+...
+
+##  API Reference
 
 ### Endpoints
 
-**Trigger Sara's Door**
+**Trigger Right Door**
 ```bash
-POST /api/trigger/sara
+POST /api/trigger/Right
 Authorization: Bearer YOUR_TOKEN
 ```
 
-**Trigger David's Door**
+**Trigger Left Door**
 ```bash
-POST /api/trigger/dave
+POST /api/trigger/Left
 Authorization: Bearer YOUR_TOKEN
 ```
 
@@ -113,22 +120,22 @@ Authorization: Bearer YOUR_TOKEN
 GET /health
 ```
 
-## 🔐 Security
+##  Security
 
 ### Essential Steps
-1. ✅ Change default Pi password
-2. ✅ Generate strong API tokens (32+ characters)
-3. ✅ Use SSH keys, disable password auth
-4. ✅ Configure firewall (ufw)
-5. ✅ Use HTTPS for internet access
-6. ✅ Store tokens securely (iOS Keychain)
+1. Change default Pi password
+2. Generate strong API tokens (32+ characters)
+3. Use SSH keys, disable password auth
+4. Configure firewall (ufw)
+5. Use HTTPS for internet access
+6. Store tokens securely (iOS Keychain)
 
 ### Generate Secure Token
 ```bash
 openssl rand -hex 32
 ```
 
-## 📱 iOS App Features
+##  iOS App Features
 
 - **Simple Interface**: Two large buttons for easy access
 - **Visual Feedback**: Animated button states
@@ -137,7 +144,7 @@ openssl rand -hex 32
 - **Connection Status**: Real-time indicator
 - **Secure**: Token stored in Keychain
 
-## 🌐 Internet Access (Optional)
+##  Internet Access (Optional)
 
 ### Requirements
 - Dynamic DNS or static IP
@@ -145,14 +152,7 @@ openssl rand -hex 32
 - SSL certificate (Let's Encrypt)
 - Nginx reverse proxy
 
-### Setup Steps
-1. Configure port forwarding on router
-2. Set up Dynamic DNS (DuckDNS, No-IP)
-3. Install and configure nginx
-4. Get SSL certificate with certbot
-5. Update iOS app with HTTPS URL
-
-## 🛠️ Maintenance
+##  Maintenance
 
 ### View Logs
 ```bash
@@ -176,7 +176,7 @@ sudo systemctl restart garagedoor.service
 tar -czf ~/garage_backup.tar.gz /opt/garagedoor
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Service Won't Start
 - Check logs: `sudo journalctl -u garagedoor.service -n 50`
@@ -194,7 +194,7 @@ tar -czf ~/garage_backup.tar.gz /opt/garagedoor
 - Check firewall: `sudo ufw status`
 - Test from Pi: `curl http://localhost:5000/health`
 
-## 📊 System Requirements
+## System Requirements
 
 ### Raspberry Pi
 - **Model**: Pi 3 or newer
@@ -207,7 +207,7 @@ tar -czf ~/garage_backup.tar.gz /opt/garagedoor
 - **Xcode**: 13+ for development
 - **Network**: WiFi access to Pi (local or internet)
 
-## 🎯 Roadmap
+##  Roadmap
 
 Future enhancements:
 - [ ] Garage door open/closed sensors
@@ -218,11 +218,7 @@ Future enhancements:
 - [ ] HomeKit integration
 - [ ] Voice control (Siri)
 
-## 📄 License
-
-Free to use for personal projects. Use at your own risk.
-
-## ⚠️ Disclaimer
+## Disclaimer
 
 This system controls physical hardware. Always:
 - Test thoroughly before connecting to garage doors
@@ -232,11 +228,11 @@ This system controls physical hardware. Always:
 - Keep backup manual opener
 - Test emergency release functionality
 
-## 🤝 Contributing
+## Contributing
 
 Found a bug? Have a feature request? Open an issue or submit a pull request!
 
-## 📞 Support
+## Support
 
 For detailed instructions, see:
 - `GARAGE_DOOR_SETUP_GUIDE.md` - Complete setup
@@ -244,6 +240,6 @@ For detailed instructions, see:
 
 ---
 
-**Built with ❤️ for secure, modern home automation**
+
 
 Version 2.0 | November 2025
