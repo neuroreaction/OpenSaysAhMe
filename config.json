@@ -1,0 +1,20 @@
+{
+  "api_tokens": [
+    "CHANGE_THIS_TO_A_LONG_RANDOM_STRING_FOR_SECURITY"
+  ],
+  "gpio_pins": {
+    "Right": 23,
+    "Left": 4
+    "Light": 22
+  },
+  "pulse_duration": 1.0,
+  "host": "0.0.0.0",
+  "port": 5000,
+  "notes": {
+    "api_tokens": "Add multiple tokens for different devices/users. Generate with: openssl rand -hex 32",
+    "gpio_pins": "BCM GPIO pin numbers (not physical pin numbers)",
+    "pulse_duration": "Duration in seconds to activate relay (typically 0.5-2.0 seconds)",
+    "host": "0.0.0.0 allows access from any network interface",
+    "port": "Port number for the API server"
+  }
+}
